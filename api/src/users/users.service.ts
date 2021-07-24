@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './user';
+import { CreateUserDto } from './dto/create-user.dto';
 
-const users: User[] = [
+let users: User[] = [
   {
     id: 1,
     sub: '1',
@@ -26,5 +27,27 @@ const users: User[] = [
 export class UsersService {
   getAllUsers(): Promise<User[]> {
     return Promise.resolve(users);
+  }
+
+  getUserById(id: number): Promise<User> {
+    const user = users.find((user) => user.id === id);
+    return Promise.resolve(user);
+  }
+
+  createUser(createUserDto: CreateUserDto): Promise<User> {
+    const newUser: User = {
+      ...createUserDto,
+      id: Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    users.push(newUser);
+
+    return Promise.resolve(newUser);
+  }
+
+  async deleteUser(id: number): Promise<boolean> {
+    users = users.filter((user) => user.id !== id);
+    return true;
   }
 }

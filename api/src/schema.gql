@@ -19,4 +19,17 @@ scalar DateTime
 
 type Query {
   getAllUsers: [User!]!
+  getUserById(id: Int!): User!
+}
+
+type Mutation {
+  createUser(newUser: CreateUserDto!): User!
+  deleteUser(id: Int!): Boolean!
+}
+
+input CreateUserDto {
+  sub: String!
+  email: String!
+  picture: String!
+  role: String!
 }
