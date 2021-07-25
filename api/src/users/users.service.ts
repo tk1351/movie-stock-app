@@ -1,53 +1,57 @@
-import { Injectable } from '@nestjs/common';
-import { User } from './user';
+import {
+  Injectable,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './dto/create-user.dto';
-
-let users: User[] = [
-  {
-    id: 1,
-    sub: '1',
-    email: 'test1@example.com',
-    picture: 'test1',
-    role: 'user',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 2,
-    sub: '2',
-    email: 'test2@example.com',
-    picture: 'test2',
-    role: 'user',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+import { IUser, JwtPayload } from './types/types';
+import { UsersRepository } from './users.repository';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { IMessage } from '../defaultType';
 
 @Injectable()
 export class UsersService {
-  getAllUsers(): Promise<User[]> {
-    return Promise.resolve(users);
+  constructor(
+    @InjectRepository(UsersRepository)
+    private usersRepository: UsersRepository,
+    private jwtService: JwtService,
+  ) {}
+
+  getAllUsers(): Promise<IUser[]> {
+    return this.usersRepository.find();
   }
 
-  getUserById(id: number): Promise<User> {
-    const user = users.find((user) => user.id === id);
-    return Promise.resolve(user);
+  async getUserById(id: number): Promise<IUser> {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) throw new NotFoundException(`id: ${id}のuserは存在しません`);
+    return user;
   }
 
-  createUser(createUserDto: CreateUserDto): Promise<User> {
-    const newUser: User = {
-      ...createUserDto,
-      id: Date.now(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    users.push(newUser);
-
-    return Promise.resolve(newUser);
+  async createUser(createUserDto: CreateUserDto): Promise<IMessage> {
+    return await this.usersRepository.createUser(createUserDto);
   }
 
-  async deleteUser(id: number): Promise<boolean> {
-    users = users.filter((user) => user.id !== id);
-    return true;
+  async login(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    const email = await this.usersRepository.validateUserSub(
+      authCredentialsDto,
+    );
+
+    if (!email) {
+      throw new UnauthorizedException('認証情報が無効です');
+    }
+
+    const payload: JwtPayload = { email };
+    const accessToken = await this.jwtService.sign(payload);
+    return { accessToken };
   }
+
+  // async deleteUser(id: number): Promise<boolean> {
+  //   users = users.filter((user) => user.id !== id);
+  //   return true;
+  // }
 }

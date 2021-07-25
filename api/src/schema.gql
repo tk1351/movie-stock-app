@@ -4,12 +4,13 @@
 
 type User {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
   sub: String!
   email: String!
   picture: String!
   role: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 """
@@ -17,19 +18,32 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Token {
+  accessToken: String!
+}
+
+type Message {
+  message: String!
+}
+
 type Query {
   getAllUsers: [User!]!
   getUserById(id: Int!): User!
 }
 
 type Mutation {
-  createUser(newUser: CreateUserDto!): User!
-  deleteUser(id: Int!): Boolean!
+  createUser(user: CreateUserDto!): Message!
+  login(auth: AuthCredentialsDto!): Token!
 }
 
 input CreateUserDto {
+  name: String!
   sub: String!
   email: String!
   picture: String!
-  role: String!
+}
+
+input AuthCredentialsDto {
+  email: String!
+  sub: String!
 }
