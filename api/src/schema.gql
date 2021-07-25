@@ -29,6 +29,7 @@ type Message {
 type Query {
   getAllUsers: [User!]!
   getUserById(id: Int!): User!
+  getAuthUser: User!
 }
 
 type Mutation {
