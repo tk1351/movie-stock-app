@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { User } from './user';
+import { User } from './models/user';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { IMessage } from '../defaultType';
 import { CreateUserDto } from './dto/create-user.dto';

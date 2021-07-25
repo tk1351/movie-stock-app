@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Entity, Unique, Column } from 'typeorm';
-import { DefaultEntity } from '../entity';
+import { DefaultEntity } from '../../entity';
 
 @Entity({ name: 'users' })
 @Unique(['email'])

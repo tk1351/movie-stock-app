@@ -1,12 +1,12 @@
 import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
-import { User } from './user';
+import { User } from './models/user';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { IUser } from './types/types';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { Token } from './token';
+import { Token } from './models/token';
 import { IMessage } from '../defaultType';
-import { Message } from './message';
+import { Message } from './models/message';
 
 @Resolver((of) => User)
 export class UsersResolver {
