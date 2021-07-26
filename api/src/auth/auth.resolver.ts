@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
-  @Query((returns) => User)
+  @Query(() => User)
   @UseGuards(GqlAuthGuard)
   getAuthUser(@CurrentUser() user: User) {
     return this.authService.whoAmI(user);

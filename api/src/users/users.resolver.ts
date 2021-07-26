@@ -8,26 +8,26 @@ import { Token } from './models/token';
 import { IMessage } from '../defaultType';
 import { Message } from './models/message';
 
-@Resolver((of) => User)
+@Resolver(() => User)
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
-  @Query((returns) => [User])
+  @Query(() => [User])
   getAllUsers(): Promise<IUser[]> {
     return this.usersService.getAllUsers();
   }
 
-  @Query((returns) => User)
+  @Query(() => User)
   async getUserById(@Args({ name: 'id', type: () => Int }) id: number) {
     return await this.usersService.getUserById(id);
   }
 
-  @Mutation((returns) => Message)
+  @Mutation(() => Message)
   createUser(@Args('user') createUserDto: CreateUserDto): Promise<IMessage> {
     return this.usersService.createUser(createUserDto);
   }
 
-  @Mutation((returns) => Token)
+  @Mutation(() => Token)
   login(
     @Args('auth') authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
