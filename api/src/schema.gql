@@ -2,6 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Movie {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  release: String!
+  time: String!
+  originCountry: String!
+  productionCompany: String!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: ID!
   createdAt: DateTime!
@@ -11,12 +28,8 @@ type User {
   email: String!
   picture: String!
   role: String!
+  movies: [Movie!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Token {
   accessToken: String!
@@ -30,11 +43,15 @@ type Query {
   getAllUsers: [User!]!
   getUserById(id: Int!): User!
   getAuthUser: User!
+  getAllMovies: [Movie!]!
+  getMovieById(id: Int!): Movie!
+  getMoviesByUserId(id: Int!): [Movie!]!
 }
 
 type Mutation {
   createUser(user: CreateUserDto!): Message!
   login(auth: AuthCredentialsDto!): Token!
+  createMovie(movie: CreateMovieDto!): Message!
 }
 
 input CreateUserDto {
@@ -47,4 +64,12 @@ input CreateUserDto {
 input AuthCredentialsDto {
   email: String!
   sub: String!
+}
+
+input CreateMovieDto {
+  title: String!
+  release: String!
+  time: String!
+  originCountry: String!
+  productionCompany: String!
 }
