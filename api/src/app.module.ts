@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { MoviesModule } from './movies/movies.module';
+import { CrewsModule } from './crews/crews.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MoviesModule } from './movies/movies.module';
     UsersModule,
     AuthModule,
     MoviesModule,
+    CrewsModule,
   ],
 })
 export class AppModule {}

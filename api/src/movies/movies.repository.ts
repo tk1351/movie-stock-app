@@ -9,6 +9,7 @@ import { IMessage } from '../defaultType';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { User } from '../users/models/user';
 import { UsersRepository } from '../users/users.repository';
+import { CrewsRepository } from '../crews/crews.repository';
 
 @EntityRepository(Movie)
 export class MoviesRepository extends Repository<Movie> {
@@ -59,12 +60,14 @@ export class MoviesRepository extends Repository<Movie> {
     user: User,
   ): Promise<IMessage> {
     const usersRepository = getCustomRepository(UsersRepository);
+    const crewsRepository = getCustomRepository(CrewsRepository);
+
     const foundUser = await usersRepository.findOne(user.id);
 
     if (foundUser.role !== 'user')
       throw new UnauthorizedException('権限がありません');
 
-    const { title, release, time, originCountry, productionCompany } =
+    const { title, release, time, originCountry, productionCompany, crews } =
       createMovieDto;
 
     const movie = this.create();
@@ -75,8 +78,18 @@ export class MoviesRepository extends Repository<Movie> {
     movie.productionCompany = productionCompany;
     movie.user = foundUser;
 
+    const newMovie = await movie.save();
+
+    crews.map((crew) =>
+      crewsRepository.createCrew({
+        category: crew.category,
+        name: crew.name,
+        movieId: newMovie.id,
+      }),
+    );
+
     try {
-      await movie.save();
+      delete movie.crews;
       return { message: '映画の登録が完了しました' };
     } catch (e) {
       throw new InternalServerErrorException();

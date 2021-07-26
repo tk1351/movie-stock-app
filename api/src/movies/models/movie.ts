@@ -1,7 +1,8 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
 import { DefaultEntity } from '../../entity';
 import { User } from '../../users/models/user';
+import { Crew } from 'src/crews/models/crew';
 
 @Entity({ name: 'movies' })
 @ObjectType()
@@ -29,4 +30,8 @@ export class Movie extends DefaultEntity {
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.movies, { eager: false })
   user: User;
+
+  @Field(() => [Crew])
+  @OneToMany(() => Crew, (crews) => crews.movie, { eager: true })
+  crews: Crew[];
 }

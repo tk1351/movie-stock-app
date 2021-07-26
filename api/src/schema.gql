@@ -2,6 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Crew {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  category: Float!
+  name: String!
+  movie: Movie!
+  movieId: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Movie {
   id: ID!
   createdAt: DateTime!
@@ -12,12 +27,8 @@ type Movie {
   originCountry: String!
   productionCompany: String!
   user: User!
+  crews: [Crew!]!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type User {
   id: ID!
@@ -46,6 +57,7 @@ type Query {
   getAllMovies: [Movie!]!
   getMovieById(id: Int!): Movie!
   getMoviesByUserId(id: Int!): [Movie!]!
+  getAllCrews: [Crew!]!
 }
 
 type Mutation {
@@ -72,4 +84,11 @@ input CreateMovieDto {
   time: String!
   originCountry: String!
   productionCompany: String!
+  crews: [CreateCrewsDto!]!
+}
+
+input CreateCrewsDto {
+  category: Float!
+  name: String!
+  movieId: Int
 }
