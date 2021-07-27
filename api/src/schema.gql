@@ -17,6 +17,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Tag {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  text: String!
+  movie: Movie!
+  movieId: Float!
+}
+
 type Movie {
   id: ID!
   createdAt: DateTime!
@@ -28,6 +37,7 @@ type Movie {
   productionCompany: String!
   user: User!
   crews: [Crew!]!
+  tags: [Tag!]!
 }
 
 type User {
@@ -58,12 +68,15 @@ type Query {
   getMovieById(id: Int!): Movie!
   getMoviesByUserId(id: Int!): [Movie!]!
   getAllCrews: [Crew!]!
+  getAllTags: [Tag!]!
 }
 
 type Mutation {
   createUser(user: CreateUserDto!): Message!
   login(auth: AuthCredentialsDto!): Token!
   createMovie(movie: CreateMovieDto!): Message!
+  updateMovie(movie: UpdateMovieDto!, id: Int!): Message!
+  deleteMovie(id: Int!): Message!
 }
 
 input CreateUserDto {
@@ -85,10 +98,37 @@ input CreateMovieDto {
   originCountry: String!
   productionCompany: String!
   crews: [CreateCrewsDto!]!
+  tags: [CreateTagsDto!]!
 }
 
 input CreateCrewsDto {
   category: Float!
   name: String!
   movieId: Int
+}
+
+input CreateTagsDto {
+  text: String!
+  movieId: Int
+}
+
+input UpdateMovieDto {
+  title: String!
+  release: String!
+  time: String!
+  originCountry: String!
+  productionCompany: String!
+  crews: [UpdateCrewsDto!]!
+  tags: [UpdateTagsDto!]!
+}
+
+input UpdateCrewsDto {
+  category: Float!
+  name: String!
+  movieId: Int!
+}
+
+input UpdateTagsDto {
+  text: String!
+  movieId: Int!
 }

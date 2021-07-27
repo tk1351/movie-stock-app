@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { User } from '../users/models/user';
 import { Movie } from '../movies/models/movie';
 import { Crew } from '../crews/models/crew';
+import { Tag } from '../tags/models/tag';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -17,7 +18,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: configService.get('POSTGRES_USER'),
       password: configService.get('POSTGRES_PASSWORD'),
       database: configService.get('POSTGRES_DB'),
-      entities: [User, Movie, Crew],
+      entities: [User, Movie, Crew, Tag],
       synchronize: configService.get('POSTGRES_SYNCHRONIZE'),
     };
   }

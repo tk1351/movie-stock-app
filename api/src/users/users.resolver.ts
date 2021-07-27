@@ -33,9 +33,4 @@ export class UsersResolver {
   ): Promise<{ accessToken: string }> {
     return this.usersService.login(authCredentialsDto);
   }
-
-  // @Mutation((returns) => Boolean)
-  // async deleteUser(@Args({ name: 'id', type: () => Int }) id: number) {
-  //   return this.usersService.deleteUser(id);
-  // }
 }
