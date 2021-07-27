@@ -1,5 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { CreateCrewsDto } from '../../crews/dto/create-crews.dto';
+import { CreateTagsDto } from '../../tags/dto/create-tags-dto';
 
 @InputType()
 export class CreateMovieDto {
@@ -20,4 +21,7 @@ export class CreateMovieDto {
 
   @Field(() => [CreateCrewsDto])
   crews: CreateCrewsDto[];
+
+  @Field(() => [CreateTagsDto])
+  tags: CreateTagsDto[];
 }

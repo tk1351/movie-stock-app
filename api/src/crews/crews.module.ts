@@ -7,5 +7,6 @@ import { CrewsRepository } from './crews.repository';
 @Module({
   imports: [TypeOrmModule.forFeature([CrewsRepository])],
   providers: [CrewsService, CrewsResolver],
+  exports: [CrewsService],
 })
 export class CrewsModule {}
