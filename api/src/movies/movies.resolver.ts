@@ -2,7 +2,6 @@ import { UseGuards, ParseIntPipe } from '@nestjs/common';
 import { Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
 import { Movie } from './models/movie';
 import { MoviesService } from './movies.service';
-import { IMovie } from './types/types';
 import { Message } from '../users/models/message';
 import { IMessage } from '../defaultType';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -16,7 +15,7 @@ export class MoviesResolver {
   constructor(private moviesService: MoviesService) {}
 
   @Query(() => [Movie])
-  async getAllMovies(): Promise<IMovie[]> {
+  async getAllMovies(): Promise<Movie[]> {
     return await this.moviesService.getAllMovies();
   }
 
